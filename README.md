@@ -43,7 +43,7 @@ capabilities, so these can continue to be used by containers.
 Ensure you are running Linux (kernel 3.8 or later) and have Docker
 (version 1.6.0 or later) installed. Then install weave with
 
-    sudo curl -L git.io/weave -o /usr/local/bin/weave
+    sudo curl -L git.io/rpi_weave -o /usr/local/bin/weave
     sudo chmod a+x /usr/local/bin/weave
 
 For usage on OSX (with Docker Machine) you first need to make sure
