@@ -6,7 +6,7 @@ PUBLISH=publish_weave publish_weaveexec
 # If you can use docker without being root, you can do "make SUDO="
 SUDO=sudo
 
-DOCKERHUB_USER=weaveworks
+DOCKERHUB_USER=dilgerm
 WEAVE_VERSION=git-$(shell git rev-parse --short=12 HEAD)
 
 WEAVER_EXE=prog/weaver/weaver
@@ -38,8 +38,8 @@ IMAGES=$(WEAVER_IMAGE) $(WEAVEEXEC_IMAGE) $(DOCKERPLUGIN_IMAGE)
 WEAVE_EXPORT=weave.tar.gz
 
 WEAVEEXEC_DOCKER_VERSION=1.6.2
-DOCKER_DISTRIB=prog/weaveexec/docker-$(WEAVEEXEC_DOCKER_VERSION).tgz
-DOCKER_DISTRIB_URL=https://get.docker.com/builds/Linux/x86_64/docker-$(WEAVEEXEC_DOCKER_VERSION).tgz
+DOCKER_DISTRIB=prog/weaveexec/docker.tgz
+DOCKER_DISTRIB_URL=https://github.com/dilgerma/weave/raw/master/prog/weaveexec/docker.tgz
 NETGO_CHECK=@strings $@ | grep cgo_stub\\\.go >/dev/null || { \
 	rm $@; \
 	echo "\nYour go standard library was built without the 'netgo' build tag."; \
@@ -115,7 +115,7 @@ $(WEAVEEXEC_UPTODATE): prog/weaveexec/Dockerfile prog/weaveexec/symlink $(DOCKER
 	cp $(WEAVEWAIT_NOMCAST_EXE) prog/weaveexec/weavewait_nomcast
 	cp $(NETCHECK_EXE) prog/weaveexec/netcheck
 	cp $(DOCKERTLSARGS_EXE) prog/weaveexec/docker_tls_args
-	cp $(DOCKER_DISTRIB) prog/weaveexec/docker.tgz
+	#cp $(DOCKER_DISTRIB) prog/weaveexec/docker.tgz
 	$(SUDO) DOCKER_HOST=$(DOCKER_HOST) docker build -t $(WEAVEEXEC_IMAGE) prog/weaveexec
 	touch $@
 
@@ -125,9 +125,6 @@ $(DOCKERPLUGIN_UPTODATE): prog/plugin/Dockerfile $(DOCKERPLUGIN_EXE)
 
 $(WEAVE_EXPORT): $(IMAGES_UPTODATE)
 	$(SUDO) DOCKER_HOST=$(DOCKER_HOST) docker save $(addsuffix :latest,$(IMAGES)) | gzip > $@
-
-$(DOCKER_DISTRIB):
-	curl -o $(DOCKER_DISTRIB) $(DOCKER_DISTRIB_URL)
 
 tests: tools/.git
 	tools/test
