@@ -1,3 +1,11 @@
+#Build Weave on Raspberry PI
+
+Build at least on Jessie.
+
+Use /build/build-arm.sh
+
+Adjust version as you like.
+
 # Weave - weaving containers into applications
 
 [![Build Status](https://travis-ci.org/weaveworks/weave.svg?branch=master)](https://travis-ci.org/weaveworks/weave) [![Integration Tests](https://circleci.com/gh/weaveworks/weave/tree/master.svg?style=shield&circle-token=4933c7dabb3d0383e62117565cb9d16df7b1a811)](https://circleci.com/gh/weaveworks/weave) [![Coverage Status](https://coveralls.io/repos/weaveworks/weave/badge.svg)](https://coveralls.io/r/weaveworks/weave)

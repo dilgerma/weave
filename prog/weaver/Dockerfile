@@ -1,4 +1,4 @@
-FROM scratch
+FROM resin/rpi-raspbian:jessie 
 MAINTAINER Weaveworks Inc <help@weave.works>
 LABEL works.weave.role=system
 WORKDIR /home/weave

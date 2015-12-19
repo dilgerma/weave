@@ -21,8 +21,8 @@ IMAGE_VERSION=${WEAVE_VERSION:-$IMAGE_VERSION}
 MIN_DOCKER_VERSION=1.6.0
 
 # These are needed for remote execs, hence we introduce them here
-DOCKERHUB_USER=${DOCKERHUB_USER:-weaveworks}
-BASE_EXEC_IMAGE=$DOCKERHUB_USER/weaveexec
+DOCKERHUB_USER=${DOCKERHUB_USER:-dilgerm}
+BASE_EXEC_IMAGE=$DOCKERHUB_USER/rpi-weaveexec
 EXEC_IMAGE=$BASE_EXEC_IMAGE:$IMAGE_VERSION
 PROXY_HOST=${PROXY_HOST:-$(echo "${DOCKER_HOST#tcp://}" | cut -s -d: -f1)}
 PROXY_HOST=${PROXY_HOST:-127.0.0.1}
@@ -338,10 +338,10 @@ if [ -z "$IS_LOCAL" ] ; then
     exit $?
 fi
 
-BASE_IMAGE=$DOCKERHUB_USER/weave
+BASE_IMAGE=$DOCKERHUB_USER/rpi-weave
 IMAGE=$BASE_IMAGE:$IMAGE_VERSION
 
-BASE_PLUGIN_IMAGE=$DOCKERHUB_USER/plugin
+BASE_PLUGIN_IMAGE=$DOCKERHUB_USER/rpi-plugin
 PLUGIN_IMAGE=$BASE_PLUGIN_IMAGE:$IMAGE_VERSION
 PLUGIN_CONTAINER_NAME=weaveplugin
 VOLUMES_CONTAINER_NAME=weavevolumes-$IMAGE_VERSION
@@ -999,6 +999,7 @@ http_call_unix() {
     shift 4
     # NB: requires curl >= 7.40
     output=$(docker exec $container curl -s -S -X $http_verb --unix-socket $socket "$@" http:$url)
+    #output=$(docker exec $container sh -c 'echo -e "$http_verb http:$url HTTP/1.0\r\n" | socat unix-connect:$socket STDIO')
     # in some docker versions, `docker exec` does not fail when the executed command fails
     [ -n "$output" ] || return 1
     echo $output
