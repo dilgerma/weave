@@ -10,7 +10,7 @@ RM=--rm
 RUN_FLAGS=-ti
 COVERAGE=
 
-DOCKERHUB_USER=weaveworks
+DOCKERHUB_USER=dilgerm
 WEAVE_VERSION=git-$(shell git rev-parse --short=12 HEAD)
 
 WEAVER_EXE=prog/weaver/weaver
@@ -44,9 +44,8 @@ IMAGES=$(WEAVER_IMAGE) $(WEAVEEXEC_IMAGE) $(PLUGIN_IMAGE) $(WEAVEDB_IMAGE)
 
 WEAVE_EXPORT=weave.tar.gz
 
-WEAVEEXEC_DOCKER_VERSION=1.6.2
+WEAVEEXEC_DOCKER_VERSION=1.11.0
 DOCKER_DISTRIB=prog/weaveexec/docker-$(WEAVEEXEC_DOCKER_VERSION).tgz
-DOCKER_DISTRIB_URL=https://get.docker.com/builds/Linux/x86_64/docker-$(WEAVEEXEC_DOCKER_VERSION).tgz
 NETGO_CHECK=@strings $@ | grep cgo_stub\\\.go >/dev/null || { \
 	rm $@; \
 	echo "\nYour go standard library was built without the 'netgo' build tag."; \
@@ -83,9 +82,9 @@ $(EXES) tests lint:
 	git submodule update --init
 	@mkdir -p $(shell pwd)/.pkg
 	$(SUDO) docker run $(RM) $(RUN_FLAGS) \
-	    -v $(shell pwd):/go/src/github.com/weaveworks/weave \
-		-v $(shell pwd)/.pkg:/go/pkg \
-		-e GOARCH -e GOOS -e CIRCLECI -e CIRCLE_BUILD_NUM -e CIRCLE_NODE_TOTAL -e CIRCLE_NODE_INDEX -e COVERDIR -e SLOW \
+	    -v $(shell pwd):/root/go/src/github.com/weaveworks/weave \
+		-v $(shell pwd)/.pkg:/root/go/pkg \
+		-e GOPATH -e GOARCH -e GOOS -e CIRCLECI -e CIRCLE_BUILD_NUM -e CIRCLE_NODE_TOTAL -e CIRCLE_NODE_INDEX -e COVERDIR -e SLOW \
 		$(BUILD_IMAGE) COVERAGE=$(COVERAGE) WEAVE_VERSION=$(WEAVE_VERSION) $@
 
 else
@@ -157,7 +156,7 @@ $(WEAVE_EXPORT): $(IMAGES_UPTODATE)
 	$(SUDO) DOCKER_HOST=$(DOCKER_HOST) docker save $(addsuffix :latest,$(IMAGES)) | gzip > $@
 
 $(DOCKER_DISTRIB):
-	curl -o $(DOCKER_DISTRIB) $(DOCKER_DISTRIB_URL)
+	#curl -o $(DOCKER_DISTRIB) $(DOCKER_DISTRIB_URL)
 
 tools/.git:
 	git submodule update --init

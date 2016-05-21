@@ -18,7 +18,7 @@ IMAGE_VERSION=${WEAVE_VERSION:-$IMAGE_VERSION}
 MIN_DOCKER_VERSION=1.6.0
 
 # These are needed for remote execs, hence we introduce them here
-DOCKERHUB_USER=${DOCKERHUB_USER:-weaveworks}
+DOCKERHUB_USER=${DOCKERHUB_USER:-dilgerm}
 BASE_EXEC_IMAGE=$DOCKERHUB_USER/weaveexec
 EXEC_IMAGE=$BASE_EXEC_IMAGE:$IMAGE_VERSION
 WEAVEDB_IMAGE=$DOCKERHUB_USER/weavedb
@@ -829,10 +829,12 @@ with_container_netns() {
 }
 
 kill_container() {
-    docker kill $1 >/dev/null 2>&1 || true
+   docker logs $1 
+   docker kill $1 >/dev/null 2>&1 || true
 }
 
 kill_container_process() {
+    docker logs $1
     kill -9 $(docker inspect --format='{{.State.Pid}}' $1) >/dev/null 2>&1 || true
 }
 
