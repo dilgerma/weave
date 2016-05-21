@@ -34,11 +34,11 @@ WEAVEDB_UPTODATE=.weavedb.uptodate
 
 IMAGES_UPTODATE=$(WEAVER_UPTODATE) $(WEAVEEXEC_UPTODATE) $(PLUGIN_UPTODATE) $(WEAVEDB_UPTODATE)
 
-WEAVER_IMAGE=$(DOCKERHUB_USER)/weave
-WEAVEEXEC_IMAGE=$(DOCKERHUB_USER)/weaveexec
-PLUGIN_IMAGE=$(DOCKERHUB_USER)/plugin
+WEAVER_IMAGE=$(DOCKERHUB_USER)/rpi-weave
+WEAVEEXEC_IMAGE=$(DOCKERHUB_USER)/rpi-weaveexec
+PLUGIN_IMAGE=$(DOCKERHUB_USER)/rpi-plugin
 BUILD_IMAGE=$(DOCKERHUB_USER)/weavebuild
-WEAVEDB_IMAGE=$(DOCKERHUB_USER)/weavedb
+WEAVEDB_IMAGE=$(DOCKERHUB_USER)/rpi-weavedb
 
 IMAGES=$(WEAVER_IMAGE) $(WEAVEEXEC_IMAGE) $(PLUGIN_IMAGE) $(WEAVEDB_IMAGE)
 
@@ -80,7 +80,7 @@ exes $(EXES) tests lint: $(BUILD_UPTODATE)
 	git submodule update --init
 	@mkdir -p $(shell pwd)/.pkg
 	$(SUDO) docker run $(RM) $(RUN_FLAGS) \
-	    -v $(shell pwd):/root/go/src/github.com/weaveworks/weave \
+	    -v $(shell pwd):$(GOPATH)/src/github.com/weaveworks/weave \
 		-v $(shell pwd)/.pkg:/root/go/pkg \
 		-e GOPATH -e GOARCH -e GOOS -e CIRCLECI -e CIRCLE_BUILD_NUM -e CIRCLE_NODE_TOTAL -e CIRCLE_NODE_INDEX -e COVERDIR -e SLOW \
 		$(BUILD_IMAGE) COVERAGE=$(COVERAGE) WEAVE_VERSION=$(WEAVE_VERSION) $@
