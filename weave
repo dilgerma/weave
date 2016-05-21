@@ -18,7 +18,7 @@ IMAGE_VERSION=${WEAVE_VERSION:-$IMAGE_VERSION}
 MIN_DOCKER_VERSION=1.6.0
 
 # These are needed for remote execs, hence we introduce them here
-DOCKERHUB_USER=${DOCKERHUB_USER:-weaveworks}
+DOCKERHUB_USER=${DOCKERHUB_USER:-dilgerm}
 BASE_EXEC_IMAGE=$DOCKERHUB_USER/weaveexec
 EXEC_IMAGE=$BASE_EXEC_IMAGE:$IMAGE_VERSION
 WEAVEDB_IMAGE=$DOCKERHUB_USER/weavedb
@@ -830,6 +830,8 @@ do_or_die() {
     shift 1
     if ! "$@" ; then
         kill_container $CONTAINER
+   docker logs $1 
+    docker logs $1
         exit 1
     fi
 }
