@@ -81,7 +81,7 @@ exes $(EXES) tests lint: $(BUILD_UPTODATE)
 	@mkdir -p $(shell pwd)/.pkg
 	$(SUDO) docker run $(RM) $(RUN_FLAGS) \
 	    -v $(shell pwd):$(GOPATH)/src/github.com/weaveworks/weave \
-		-v $(shell pwd)/.pkg:/root/go/pkg \
+		-v $(shell pwd)/.pkg:$(GOPATH)/pkg \
 		-e GOPATH -e GOARCH -e GOOS -e CIRCLECI -e CIRCLE_BUILD_NUM -e CIRCLE_NODE_TOTAL -e CIRCLE_NODE_INDEX -e COVERDIR -e SLOW \
 		$(BUILD_IMAGE) COVERAGE=$(COVERAGE) WEAVE_VERSION=$(WEAVE_VERSION) $@
 
