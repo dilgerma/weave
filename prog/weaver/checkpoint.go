@@ -34,7 +34,8 @@ func checkForUpdates(dockerVersion string, network string) {
 	syscall.Uname(&uts)
 	flags := map[string]string{
 		"docker-version": dockerVersion,
-		"kernel-version": charsToString(uts.Release[:]),
+		"kernel-version" : "4.4.10-hypriotos-v7+",
+                //"kernel-version": charsToString(uts.Release[:]),
 	}
 	if network != "" {
 		flags["network"] = network
